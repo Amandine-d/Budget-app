@@ -19,8 +19,8 @@ export const BudgetsProvider = ({ children }) => {
     setExpenses(prevExpenses => {
       return [...prevExpenses, { id: uuidV4(), description, amount, budgetId }]
     })
-   }
-  function addBudget() {
+  }
+  function addBudget({ name, max}) {
     setBudgets(prevBudgets => {
       //We take our current budgets
       if (prevBudgets.find(budget => budget.name === name)) {
@@ -31,8 +31,17 @@ export const BudgetsProvider = ({ children }) => {
       //We keep all the budgets in this array amd we add a new budget with id, name and max
     })
   }
-  function deleteBudget() { }
-  function deleteExpense() { }
+  function deleteBudget({ id }) {
+    //TODO : Deal with expenses' categories
+    setBudgets(prevBudgets => {
+      return prevBudgets.filter(budget => budget.id !== id)
+    })
+  }
+  function deleteExpense({ id }) {
+    setExpenses(prevExpenses => {
+      return prevExpenses.filter(expense => expense.id !== id)
+    })
+  }
 
   return (<BudgetsContext.Provider value={{
     budgets,
