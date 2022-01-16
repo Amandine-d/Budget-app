@@ -16,7 +16,7 @@ export const BudgetsProvider = ({ children }) => {
   const [expenses, setExpenses] = useLocalStorage("expenses",[]);
 
   function getBudgetExpenses(budgetId) {
-    return expenses.filter(expense => expense.budget === budgetId)
+    return expenses.filter(expense => expense.budgetId === budgetId)
     //Will return only the id of the category of the expense
   }
   function addExpense({ description, amount, budgetId }) {
@@ -36,7 +36,12 @@ export const BudgetsProvider = ({ children }) => {
     })
   }
   function deleteBudget({ id }) {
-    //TODO : Deal with expenses' categories
+    setExpenses(prevExpenses => {
+      return prevExpenses.map(expense => {
+        if (expense.budgetId !== id) return expenses
+        return { ...expense, budgetId: UNCATEGORIZED_BUDGET_ID }
+      })
+    })
     setBudgets(prevBudgets => {
       return prevBudgets.filter(budget => budget.id !== id)
     })
